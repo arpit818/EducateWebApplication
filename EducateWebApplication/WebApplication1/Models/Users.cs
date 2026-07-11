@@ -9,7 +9,7 @@ namespace WebApplication1.Models
 
         [Required]
         [StringLength(50)]
-        public string? Useranme { get; set; }
+        public string? Username { get; set; }
 
         [Required]
         [StringLength(50)]
@@ -17,6 +17,16 @@ namespace WebApplication1.Models
 
         [StringLength(70)]
         public string? Email { get; set; }
+
+        public DateTime FromDate { get; set; } 
+
+        public DateTime ToDate { get; set; }
+
+        [Required]
+        [StringLength(10)]
+        public string? ModuleName { get; set; }
+
+
 
     }
 }

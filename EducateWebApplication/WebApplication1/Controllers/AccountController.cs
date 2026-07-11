@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Data;
+using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
@@ -25,7 +26,7 @@ namespace WebApplication1.Controllers
                 ViewBag.Error = "Username and Password are required.";
             }
 
-            var user = await _db.Users.FirstOrDefaultAsync(u => u.Useranme == username && u.Password == password);
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Username == username && u.Password == password);
             if (user == null)
             {
                 HttpContext.Session.SetString("Username", username);
@@ -38,6 +39,35 @@ namespace WebApplication1.Controllers
                 return View();
             }
         }
+
+
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        //[HttpPost]
+        //public async Task<IActionResult> Register(string username, string password, string email)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var existingUser = await _db.Users
+        //            .FirstOrDefaultAsync( u => u.Username == Users.Username);
+
+        //        if (existingUser != null)
+        //        {
+        //            ViewBag.Error = "Username already exists.";
+        //            return View();
+        //        }
+
+        //        _db.Users.Add(Users);
+        //        await _db.SaveChangesAsync();
+
+        //        return RedirectToAction("Login");
+        //    }
+        //    return View(Users)
+        //}
 
         //Logout
         public IActionResult Logout()
