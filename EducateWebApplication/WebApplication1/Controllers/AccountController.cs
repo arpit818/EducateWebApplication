@@ -47,27 +47,39 @@ namespace WebApplication1.Controllers
             return View();
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Register(string username, string password, string email)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var existingUser = await _db.Users
-        //            .FirstOrDefaultAsync( u => u.Username == Users.Username);
+        [HttpPost]
+        public async Task<IActionResult> Register(string username, string password, string email, string moduleName, DateTime toValidity)
+        {
+            if(!ModelState.IsValid || toValidity < new DateTime(1753, 1, 1))
+    {
+                ViewBag.Error = "Please provide a valid date.";
+                return View();
+            }
 
-        //        if (existingUser != null)
-        //        {
-        //            ViewBag.Error = "Username already exists.";
-        //            return View();
-        //        }
+            var existingUser = await _db.Users
+                .FirstOrDefaultAsync(u => u.Username == username);
 
-        //        _db.Users.Add(Users);
-        //        await _db.SaveChangesAsync();
+            if (existingUser != null)
+            {
+                ViewBag.Error = "Username already exists.";
+                return View();
+            }
 
-        //        return RedirectToAction("Login");
-        //    }
-        //    return View(Users)
-        //}
+            var user = new Users
+            {
+                Username = username,
+                Password = password, // see note below about hashing
+                Email = email,
+                ModuleName = moduleName,
+                ToDate = toValidity,
+                CreatedOn = DateTime.Now
+            };
+
+            _db.Users.Add(user);
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction("Login");
+        }
 
         //Logout
         public IActionResult Logout()

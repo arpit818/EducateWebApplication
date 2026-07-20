@@ -1,4 +1,220 @@
 ﻿@{
     ViewData["Title"] = "Register";
-
+    Layout = "_BlankLayout";
 }
+<div class="login-page">
+    <div class="login-left">
+        <div class="illustration">
+            <div class="icon-circle">
+                <i class="bi bi-mortarboard-fill"></i>
+            </div>
+            <div class="floating-icon icon1">f(x)</div>
+            <div class="floating-icon icon2">π</div>
+            <div class="floating-icon icon3">√x</div>
+        </div>
+        <h2>Exam Mastery Hub</h2>
+        <p>Unleash Your Academic Success with Exam Mastery Hub's Exam Excellence Platform</p>
+        <div class="dots">
+            <span></span><span class="active"></span><span></span><span></span>
+        </div>
+    </div>
+    <div class="login-right">
+        <div class="login-form-container">
+            <div class="brand">
+                <i class="bi bi-mortarboard-fill"></i>
+                <span>MASTERY <strong>HUB</strong></span>
+            </div>
+
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert alert-danger">@ViewBag.Error</div>
+            }
+
+            <form asp-controller="Account" asp-action="Register" method="post" class="register-form">
+                <div class="form-group-custom">
+                    <label>Username or email</label>
+                    <input type="text" name="username" placeholder="Enter your username" required />
+                </div>
+
+                <div class="form-group-custom">
+                    <div class="label-row">
+                        <label>Password</label>
+                        <a href="#" class="forgot-link">Forgot password?</a>
+                    </div>
+                    <input type="password" name="password" placeholder="Enter your password" required />
+                </div>
+
+                <div class="form-group-custom">
+                    <label>Email</label>
+                    <input type="email" name="email" placeholder="Enter your email" required />
+                </div>
+
+                <div class="form-group-custom">
+                    <label>Module Name</label>
+                    <select name="moduleName" required>
+                        <option value="">-- Select Module --</option>
+                        <option value="Mathematics">Mathematics</option>
+                        <option value="Physics">Physics</option>
+                        <option value="Chemistry">Chemistry</option>
+                        <option value="Biology">Biology</option>
+                        <option value="Computer Science">Computer Science</option>
+                    </select>
+                </div>
+
+                <div class="form-group-custom">
+                    <label>Valid Until</label>
+                    <input type="date" name="toValidity" required />
+                </div>
+
+                <button type="submit" class="btn-register">Register</button>
+
+                <p class="login-hint">
+                    Already have an account? <a asp-controller="Account" asp-action="Register">Sign in</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .login-right {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+    }
+
+    .login-form-container {
+        width: 100%;
+        max-width: 380px;
+    }
+
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 15px;
+        color: #2f6e51;
+        letter-spacing: 1px;
+        margin-bottom: 32px;
+    }
+
+        .brand i {
+            font-size: 22px;
+            color: #2f6e51;
+        }
+
+        .brand strong {
+            color: #1f4d38;
+        }
+
+    .alert-danger {
+        background: #fdecea;
+        color: #b3261e;
+        padding: 10px 14px;
+        border-radius: 8px;
+        font-size: 13px;
+        margin-bottom: 18px;
+        border: 1px solid #f5c6c3;
+    }
+
+    .form-group-custom {
+        margin-bottom: 20px;
+    }
+
+        .form-group-custom label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #3a4a43;
+            margin-bottom: 6px;
+        }
+
+    .label-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .forgot-link {
+        font-size: 12px;
+        color: #2f6e51;
+        text-decoration: none;
+    }
+
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+
+    .form-group-custom input,
+    .form-group-custom select {
+        width: 100%;
+        padding: 11px 14px;
+        border: 1px solid #d8e2dc;
+        border-radius: 8px;
+        font-size: 14px;
+        color: #2b332f;
+        background-color: #fbfdfc;
+        outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        box-sizing: border-box;
+    }
+
+        .form-group-custom input::placeholder {
+            color: #a3aca7;
+        }
+
+        .form-group-custom input:focus,
+        .form-group-custom select:focus {
+            border-color: #2f6e51;
+            box-shadow: 0 0 0 3px rgba(47, 110, 81, 0.12);
+            background-color: #fff;
+        }
+
+    .form-group-custom select {
+        appearance: none;
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%232f6e51' d='M6 8L0 0h12z'/></svg>");
+        background-repeat: no-repeat;
+        background-position: right 14px center;
+        cursor: pointer;
+    }
+
+    .btn-register {
+        width: 100%;
+        padding: 12px;
+        background-color: #2f6e51;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s, transform 0.1s;
+        margin-top: 6px;
+    }
+
+        .btn-register:hover {
+            background-color: #25573f;
+        }
+
+        .btn-register:active {
+            transform: scale(0.98);
+        }
+
+    .login-hint {
+        text-align: center;
+        font-size: 13px;
+        color: #5c6b64;
+        margin-top: 18px;
+    }
+
+        .login-hint a {
+            color: #2f6e51;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+            .login-hint a:hover {
+                text-decoration: underline;
+            }
+</style>
