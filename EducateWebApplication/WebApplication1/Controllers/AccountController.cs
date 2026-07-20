@@ -23,7 +23,8 @@ namespace WebApplication1.Controllers
         {
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
-                ViewBag.Error = "Username and Password are required.";
+                TempData["ErrorMessage"] = "Username and Password are required.";
+                //ViewBag.Error = "Username and Password are required.";
             }
 
             var user = await _db.Users.FirstOrDefaultAsync(u => u.Username == username && u.Password == password);
@@ -35,7 +36,8 @@ namespace WebApplication1.Controllers
             }
             else
             {
-                ViewBag.Error = "Invalid username or password.";
+                TempData["ErrorMessage"] = "Invalid username or password.";
+                //ViewBag.Error = "Invalid username or password.";
                 return View();
             }
         }
@@ -51,8 +53,9 @@ namespace WebApplication1.Controllers
         public async Task<IActionResult> Register(string username, string password, string email, string moduleName, DateTime toValidity)
         {
             if(!ModelState.IsValid || toValidity < new DateTime(1753, 1, 1))
-    {
-                ViewBag.Error = "Please provide a valid date.";
+            {
+                TempData["ErrorMessage"] = "Please provide a valid date.";
+                //ViewBag.Error = "Please provide a valid date.";
                 return View();
             }
 
@@ -61,7 +64,8 @@ namespace WebApplication1.Controllers
 
             if (existingUser != null)
             {
-                ViewBag.Error = "Username already exists.";
+                TempData["ErrorMessage"] = "UserName already exits";
+                //ViewBag.Error = "Username already exists.";
                 return View();
             }
 
@@ -77,7 +81,7 @@ namespace WebApplication1.Controllers
 
             _db.Users.Add(user);
             await _db.SaveChangesAsync();
-
+            TempData["SuucessMessage"] = "Registration successful!";
             return RedirectToAction("Login");
         }
 
