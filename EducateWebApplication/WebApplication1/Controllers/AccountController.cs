@@ -21,25 +21,20 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password)
         {
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
-            {
-                TempData["ErrorMessage"] = "Username and Password are required.";
-                //ViewBag.Error = "Username and Password are required.";
-            }
-
             var user = await _db.Users.FirstOrDefaultAsync(u => u.Username == username && u.Password == password);
+
             if (user == null)
             {
-                HttpContext.Session.SetString("Username", username);
-                HttpContext.Session.SetString("Password", password);
-                return RedirectToAction("Index", "Home");
-            }
-            else
-            {
                 TempData["ErrorMessage"] = "Invalid username or password.";
-                //ViewBag.Error = "Invalid username or password.";
                 return View();
             }
+
+            HttpContext.Session.SetString("Username", user.Username ?? "");
+            HttpContext.Session.SetInt32("UserId", user.UsersID);
+            HttpContext.Session.SetString("Role", user.RoleType);
+
+            return RedirectToAction("Dashboard"); 
+            
         }
 
 

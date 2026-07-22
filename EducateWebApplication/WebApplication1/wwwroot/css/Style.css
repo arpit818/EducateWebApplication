@@ -3,6 +3,7 @@
 }
 
 
- .navbar {
-    background: linear-gradient(90deg, #4e54c8, #8f94fb)
+.navbar {
+    /*background: linear-gradient(90deg, #4e54c8, #8f94fb) ;*/
+    background: linear-gradient(180deg, #d4f5e0, #eafaf1);
 }

@@ -29,6 +29,7 @@ namespace WebApplication1.Models
 
         public DateTime ToDate { get; set; }
 
+        public string? RoleType { get; set; }
         public DateTime CreatedOn { get; set; } = DateTime.Now;
 
     }

@@ -1,0 +1,262 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "_BlankLayout";
+    var course = ViewBag.Course as WebApplication1.Models.Course;
+    int? selectedModuleId = ViewBag.SelectedModuleId;
+    var topics = ViewBag.Topics as List<WebApplication1.Models.Topic> ?? new();
+    var progress = ViewBag.Progress as Dictionary<int, WebApplication1.Models.UserProgress> ?? new();
+}
+<div class="dash-page">
+    <div class="dash-header">
+        <div class="brand"><i class="bi bi-mortarboard-fill"></i><span>MASTERY <strong>HUB</strong></span></div>
+        <a asp-controller="Account" asp-action="Logout" class="logout-btn">Log out</a>
+    </div>
+
+    @if (course == null)
+    {
+        <p>No course assigned yet.</p>
+    }
+    else
+    {
+        <div class="course-banner">
+            <div class="course-label">Purchased course</div>
+            <div class="course-name">@course.CourseName</div>
+            <div class="course-meta">@course.Modules.Count modules</div>
+        </div>
+
+        <div class="section-title">Modules</div>
+        <div class="module-grid">
+            @foreach (var m in course.Modules)
+            {
+                var active = m.ModuleId == selectedModuleId;
+                <a asp-action="StudentDashboard" asp-route-moduleId="@m.ModuleId"
+                   class="module-card @(active ? "module-active" : "")">
+                    <div class="module-name">@m.ModuleName</div>
+                </a>
+            }
+        </div>
+
+        @if (topics.Any())
+        {
+            var currentModule = course.Modules.FirstOrDefault(m => m.ModuleId == selectedModuleId);
+            <div class="section-title">@currentModule?.ModuleName topics</div>
+            <div class="topic-list">
+                @for (int i = 0; i < topics.Count; i++)
+                {
+                    var t = topics[i];
+                    progress.TryGetValue(t.TopicId, out var p);
+                    bool pdfViewed = p?.PdfViewed ?? false;
+                    bool quizPassed = p?.QuizPassed ?? false;
+                    bool quizUnlocked = pdfViewed;
+                    bool examUnlocked = quizPassed;
+
+                    <div class="topic-row">
+                        <div>
+                            <div class="topic-name">@t.TopicName</div>
+                            <div class="topic-sub">PDF &middot; Quiz &middot; Exam</div>
+                        </div>
+                        <div class="topic-actions">
+                            <a href="@t.PdfPath" target="_blank" class="btn-pill btn-open"
+                               onclick="fetch('/Account/MarkPdfViewed?topicId=@t.TopicId', { method: 'POST' })">
+                                <i class="bi bi-file-earmark-pdf"></i> PDF
+                            </a>
+
+                            @if (quizUnlocked)
+                            {
+                                <a asp-controller="Quiz" asp-action="Start" asp-route-topicId="@t.TopicId" class="btn-pill btn-open">
+                                    <i class="bi bi-question-circle"></i> Quiz
+                                </a>
+                            }
+                            else
+                            {
+                                <span class="btn-pill btn-locked"><i class="bi bi-lock"></i> Quiz</span>
+                            }
+
+                            @if (examUnlocked)
+                            {
+                                <a asp-controller="Exam" asp-action="Start" asp-route-topicId="@t.TopicId" class="btn-pill btn-primary-pill">
+                                    <i class="bi bi-pencil-square"></i> Exam
+                                </a>
+                            }
+                            else
+                            {
+                                <span class="btn-pill btn-locked"><i class="bi bi-lock"></i> Exam</span>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    }
+</div>
+
+<style>
+    .dash-page {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 30px 20px;
+    }
+
+    .dash-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+    }
+
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 16px;
+        color: #2f6e51;
+        letter-spacing: 1px;
+    }
+
+        .brand i {
+            font-size: 24px;
+        }
+
+        .brand strong {
+            color: #1f4d38;
+        }
+
+    .logout-btn {
+        color: #b3261e;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .course-banner {
+        background: #eafaf1;
+        border-radius: 16px;
+        padding: 20px 24px;
+        margin-bottom: 24px;
+    }
+
+    .course-label {
+        font-size: 12px;
+        color: #5c8a75;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 4px;
+    }
+
+    .course-name {
+        font-size: 22px;
+        font-weight: 700;
+        color: #1f4d38;
+    }
+
+    .course-meta {
+        font-size: 13px;
+        color: #5c8a75;
+        margin-top: 4px;
+    }
+
+    .section-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: #1f4d38;
+        margin-bottom: 12px;
+    }
+
+    .module-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 12px;
+        margin-bottom: 28px;
+    }
+
+    .module-card {
+        background: #fff;
+        border: 1px solid #d8e2dc;
+        border-radius: 14px;
+        padding: 16px;
+        text-align: center;
+        text-decoration: none;
+        color: #1f4d38;
+        font-weight: 700;
+        font-size: 14px;
+        transition: border-color .15s;
+    }
+
+        .module-card:hover {
+            border-color: #2f6e51;
+        }
+
+    .module-active {
+        border: 2px solid #2f6e51;
+    }
+
+    .topic-list {
+        background: #fff;
+        border: 1px solid #d8e2dc;
+        border-radius: 14px;
+        overflow: hidden;
+    }
+
+    .topic-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 18px;
+        border-bottom: 1px solid #eef2f0;
+    }
+
+        .topic-row:last-child {
+            border-bottom: none;
+        }
+
+    .topic-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: #1f4d38;
+    }
+
+    .topic-sub {
+        font-size: 12px;
+        color: #5c8a75;
+    }
+
+    .topic-actions {
+        display: flex;
+        gap: 8px;
+    }
+
+    .btn-pill {
+        border: 1px solid #d8e2dc;
+        background: #fff;
+        border-radius: 8px;
+        padding: 6px 12px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .btn-open {
+        color: #2f6e51;
+    }
+
+        .btn-open:hover {
+            border-color: #2f6e51;
+        }
+
+    .btn-primary-pill {
+        background: #2f6e51;
+        border-color: #2f6e51;
+        color: #fff;
+    }
+
+    .btn-locked {
+        background: #f5f5f5;
+        border-color: #eee;
+        color: #aaa;
+        cursor: not-allowed;
+    }
+</style>
