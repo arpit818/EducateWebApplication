@@ -33,7 +33,12 @@ namespace WebApplication1.Controllers
             HttpContext.Session.SetInt32("UserId", user.UsersID);
             HttpContext.Session.SetString("Role", user.RoleType);
 
-            return RedirectToAction("Dashboard"); 
+            if (user.RoleType == "Admin")
+            {
+                return RedirectToAction("AdminDashboard", "DashBoard");
+            }
+
+            return RedirectToAction("StudentDashboard","Dashboard"); 
             
         }
 

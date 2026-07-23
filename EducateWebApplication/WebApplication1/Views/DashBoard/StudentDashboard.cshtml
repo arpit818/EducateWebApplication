@@ -1,93 +1,101 @@
 ﻿@{
-    ViewData["Title"] = "Dashboard";
-    Layout = "_BlankLayout";
-    var course = ViewBag.Course as WebApplication1.Models.Course;
-    int? selectedModuleId = ViewBag.SelectedModuleId;
-    var topics = ViewBag.Topics as List<WebApplication1.Models.Topic> ?? new();
-    var progress = ViewBag.Progress as Dictionary<int, WebApplication1.Models.UserProgress> ?? new();
+    ViewData["Title"] = "Student Dashboard";
+   
 }
 <div class="dash-page">
-    <div class="dash-header">
+    @* <div class="dash-header">
         <div class="brand"><i class="bi bi-mortarboard-fill"></i><span>MASTERY <strong>HUB</strong></span></div>
         <a asp-controller="Account" asp-action="Logout" class="logout-btn">Log out</a>
+    </div> *@
+
+    <div class="course-banner">
+        <div class="course-label">Purchased course</div>
+        <div class="course-name">.NET Full Stack</div>
+        <div class="course-meta">Valid until 30 Sep 2026 &middot; 4 modules</div>
     </div>
 
-    @if (course == null)
-    {
-        <p>No course assigned yet.</p>
-    }
-    else
-    {
-        <div class="course-banner">
-            <div class="course-label">Purchased course</div>
-            <div class="course-name">@course.CourseName</div>
-            <div class="course-meta">@course.Modules.Count modules</div>
-        </div>
+    <div class="section-title">Modules</div>
+    <div class="module-grid">
+        <a asp-controller="DotNet" asp-action="CSharp" class="module-card module-active">
+            <i class="bi bi-code-slash"></i>
+            <div class="module-name">C#</div>
+            <div class="module-count">5 topics</div>
+        </a>
+        <a href="#" class="module-card">
+            <i class="bi bi-hdd-network"></i>
+            <div class="module-name">ASP.NET Core</div>
+            <div class="module-count">6 topics</div>
+        </a>
+        <a href="#" class="module-card">
+            <i class="bi bi-database"></i>
+            <div class="module-name">SQL Server</div>
+            <div class="module-count">4 topics</div>
+        </a>
+        <a href="#" class="module-card">
+            <i class="bi bi-grid-3x3-gap"></i>
+            <div class="module-name">MVC</div>
+            <div class="module-count">5 topics</div>
+        </a>
+    </div>
 
-        <div class="section-title">Modules</div>
-        <div class="module-grid">
-            @foreach (var m in course.Modules)
-            {
-                var active = m.ModuleId == selectedModuleId;
-                <a asp-action="StudentDashboard" asp-route-moduleId="@m.ModuleId"
-                   class="module-card @(active ? "module-active" : "")">
-                    <div class="module-name">@m.ModuleName</div>
-                </a>
-            }
-        </div>
-
-        @if (topics.Any())
-        {
-            var currentModule = course.Modules.FirstOrDefault(m => m.ModuleId == selectedModuleId);
-            <div class="section-title">@currentModule?.ModuleName topics</div>
-            <div class="topic-list">
-                @for (int i = 0; i < topics.Count; i++)
-                {
-                    var t = topics[i];
-                    progress.TryGetValue(t.TopicId, out var p);
-                    bool pdfViewed = p?.PdfViewed ?? false;
-                    bool quizPassed = p?.QuizPassed ?? false;
-                    bool quizUnlocked = pdfViewed;
-                    bool examUnlocked = quizPassed;
-
-                    <div class="topic-row">
-                        <div>
-                            <div class="topic-name">@t.TopicName</div>
-                            <div class="topic-sub">PDF &middot; Quiz &middot; Exam</div>
-                        </div>
-                        <div class="topic-actions">
-                            <a href="@t.PdfPath" target="_blank" class="btn-pill btn-open"
-                               onclick="fetch('/Account/MarkPdfViewed?topicId=@t.TopicId', { method: 'POST' })">
-                                <i class="bi bi-file-earmark-pdf"></i> PDF
-                            </a>
-
-                            @if (quizUnlocked)
-                            {
-                                <a asp-controller="Quiz" asp-action="Start" asp-route-topicId="@t.TopicId" class="btn-pill btn-open">
-                                    <i class="bi bi-question-circle"></i> Quiz
-                                </a>
-                            }
-                            else
-                            {
-                                <span class="btn-pill btn-locked"><i class="bi bi-lock"></i> Quiz</span>
-                            }
-
-                            @if (examUnlocked)
-                            {
-                                <a asp-controller="Exam" asp-action="Start" asp-route-topicId="@t.TopicId" class="btn-pill btn-primary-pill">
-                                    <i class="bi bi-pencil-square"></i> Exam
-                                </a>
-                            }
-                            else
-                            {
-                                <span class="btn-pill btn-locked"><i class="bi bi-lock"></i> Exam</span>
-                            }
-                        </div>
-                    </div>
-                }
+    <div class="section-title">C# topics</div>
+    <div class="topic-list">
+        <div class="topic-row">
+            <div>
+                <div class="topic-name">Introduction to C#</div>
+                <div class="topic-sub">PDF &middot; Quiz &middot; Exam</div>
             </div>
-        }
-    }
+            <div class="topic-actions">
+                <a href="#" class="btn-pill btn-open"><i class="bi bi-file-earmark-pdf"></i> PDF</a>
+                <a href="#" class="btn-pill btn-open"><i class="bi bi-question-circle"></i> Quiz</a>
+                <a href="#" class="btn-pill btn-primary-pill"><i class="bi bi-pencil-square"></i> Exam</a>
+            </div>
+        </div>
+        <div class="topic-row">
+            <div>
+                <div class="topic-name">Data Types and Variables</div>
+                <div class="topic-sub">PDF &middot; Quiz &middot; Exam</div>
+            </div>
+            <div class="topic-actions">
+                <a href="#" class="btn-pill btn-open"><i class="bi bi-file-earmark-pdf"></i> PDF</a>
+                <a href="#" class="btn-pill btn-open"><i class="bi bi-question-circle"></i> Quiz</a>
+                <span class="btn-pill btn-locked"><i class="bi bi-lock"></i> Exam</span>
+            </div>
+        </div>
+        <div class="topic-row">
+            <div>
+                <div class="topic-name">OOP Concepts</div>
+                <div class="topic-sub">PDF &middot; Quiz &middot; Exam</div>
+            </div>
+            <div class="topic-actions">
+                <a href="#" class="btn-pill btn-open"><i class="bi bi-file-earmark-pdf"></i> PDF</a>
+                <span class="btn-pill btn-locked"><i class="bi bi-lock"></i> Quiz</span>
+                <span class="btn-pill btn-locked"><i class="bi bi-lock"></i> Exam</span>
+            </div>
+        </div>
+        <div class="topic-row">
+            <div>
+                <div class="topic-name">Exception Handling</div>
+                <div class="topic-sub">PDF &middot; Quiz &middot; Exam</div>
+            </div>
+            <div class="topic-actions">
+                <a href="#" class="btn-pill btn-open"><i class="bi bi-file-earmark-pdf"></i> PDF</a>
+                <span class="btn-pill btn-locked"><i class="bi bi-lock"></i> Quiz</span>
+                <span class="btn-pill btn-locked"><i class="bi bi-lock"></i> Exam</span>
+            </div>
+        </div>
+        <div class="topic-row">
+            <div>
+                <div class="topic-name">Collections and LINQ</div>
+                <div class="topic-sub">PDF &middot; Quiz &middot; Exam</div>
+            </div>
+            <div class="topic-actions">
+                <a href="#" class="btn-pill btn-open"><i class="bi bi-file-earmark-pdf"></i> PDF</a>
+                <span class="btn-pill btn-locked"><i class="bi bi-lock"></i> Quiz</span>
+                <span class="btn-pill btn-locked"><i class="bi bi-lock"></i> Exam</span>
+            </div>
+        </div>
+    </div>
 </div>
 
 <style>
@@ -95,6 +103,7 @@
         max-width: 960px;
         margin: 0 auto;
         padding: 30px 20px;
+        font-family: 'Segoe UI', sans-serif;
     }
 
     .dash-header {
@@ -177,17 +186,36 @@
         text-align: center;
         text-decoration: none;
         color: #1f4d38;
-        font-weight: 700;
-        font-size: 14px;
         transition: border-color .15s;
     }
 
-        .module-card:hover {
-            border-color: #2f6e51;
+        .module-card i {
+            font-size: 24px;
+            color: #5c6b64;
         }
 
     .module-active {
         border: 2px solid #2f6e51;
+    }
+
+        .module-active i {
+            color: #2f6e51;
+        }
+
+    .module-card:hover {
+        border-color: #2f6e51;
+    }
+
+    .module-name {
+        font-size: 14px;
+        font-weight: 700;
+        margin-top: 8px;
+    }
+
+    .module-count {
+        font-size: 11px;
+        color: #5c8a75;
+        margin-top: 2px;
     }
 
     .topic-list {

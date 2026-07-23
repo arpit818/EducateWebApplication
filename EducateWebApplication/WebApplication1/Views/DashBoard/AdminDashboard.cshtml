@@ -1,5 +1,208 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = "_BlankLayout";
 }
+<div class="dash-page">
+    <div class="dash-header">
+        <div class="brand"><i class="bi bi-mortarboard-fill"></i><span>MASTERY <strong>HUB</strong> <small>— admin</small></span></div>
+        <a asp-controller="Account" asp-action="Logout" class="logout-btn">Log out</a>
+    </div>
+
+    <div class="card-grid">
+        <div class="dash-card">
+            <span class="card-label">Total Users</span>
+            <span class="card-value">128</span>
+        </div>
+        <div class="dash-card">
+            <span class="card-label">Total Modules</span>
+            <span class="card-value">5</span>
+        </div>
+        <div class="dash-card card-warning">
+            <span class="card-label">Expiring in 7 Days</span>
+            <span class="card-value">9</span>
+        </div>
+        <div class="dash-card card-danger">
+            <span class="card-label">Expired</span>
+            <span class="card-value">14</span>
+        </div>
+    </div>
+
+    <h3 class="table-title">All Users</h3>
+    <div class="table-wrap">
+        <table class="dash-table">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Module</th>
+                    <th>Valid Until</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>priya_sharma</td>
+                    <td>priya@example.com</td>
+                    <td>Mathematics</td>
+                    <td>30 Sep 2026</td>
+                    <td><span class="status-pill pill-ok">Active</span></td>
+                </tr>
+                <tr>
+                    <td>rahul_verma</td>
+                    <td>rahul@example.com</td>
+                    <td>Physics</td>
+                    <td>10 Jun 2026</td>
+                    <td><span class="status-pill pill-danger">Expired</span></td>
+                </tr>
+                <tr>
+                    <td>anita_desai</td>
+                    <td>anita@example.com</td>
+                    <td>Chemistry</td>
+                    <td>15 Aug 2026</td>
+                    <td><span class="status-pill pill-ok">Active</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    .dash-page {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 30px 20px;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .dash-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 16px;
+        color: #2f6e51;
+        letter-spacing: 1px;
+    }
+
+        .brand i {
+            font-size: 24px;
+        }
+
+        .brand small {
+            font-weight: 400;
+            color: #5c8a75;
+            font-size: 13px;
+        }
+
+    .logout-btn {
+        color: #b3261e;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 14px;
+        margin-bottom: 36px;
+    }
+
+    .dash-card {
+        background: #fff;
+        border: 1px solid #d8e2dc;
+        border-radius: 14px;
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .card-label {
+        font-size: 12px;
+        color: #5c8a75;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .card-value {
+        font-size: 24px;
+        font-weight: 700;
+        color: #1f4d38;
+    }
+
+    .card-warning {
+        background: #fff9e8;
+        border-color: #f0d68a;
+    }
+
+        .card-warning .card-label, .card-warning .card-value {
+            color: #a86e00;
+        }
+
+    .card-danger {
+        background: #fdecea;
+        border-color: #f0b3ae;
+    }
+
+        .card-danger .card-label, .card-danger .card-value {
+            color: #b3261e;
+        }
+
+    .table-title {
+        color: #1f4d38;
+        margin-bottom: 14px;
+        font-size: 16px;
+    }
+
+    .table-wrap {
+        overflow-x: auto;
+        border: 1px solid #d8e2dc;
+        border-radius: 14px;
+        background: #fff;
+    }
+
+    .dash-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+    }
+
+        .dash-table th {
+            background: #f2f8f5;
+            text-align: left;
+            padding: 12px 16px;
+            color: #3a4a43;
+            font-size: 11px;
+            text-transform: uppercase;
+        }
+
+        .dash-table td {
+            padding: 12px 16px;
+            border-top: 1px solid #eef2f0;
+            color: #2b332f;
+        }
+
+    .status-pill {
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .pill-ok {
+        background: #e6f4ec;
+        color: #2f6e51;
+    }
+
+    .pill-danger {
+        background: #fdecea;
+        color: #b3261e;
+    }
+</style>

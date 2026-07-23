@@ -15,7 +15,7 @@ namespace WebApplication1.Controllers
         }
         public IActionResult Dashboard()
         {
-            var role = HttpContext.Session.GetString("Role");
+            var role = HttpContext.Session.GetString("RoleType");
 
             if (string.IsNullOrEmpty(role))
                 return RedirectToAction("Login");
@@ -32,41 +32,7 @@ namespace WebApplication1.Controllers
 
             var user = await _db.Users.FirstOrDefaultAsync(u => u.UsersID== userId);
             if (user == null) return RedirectToAction("Login");
-
-            // Assumes the user's purchased course is looked up by their ModuleName/CourseName link.
-            // Adjust this query once Users has a proper CourseId FK.
-            var course = await _db.Courses
-                .Include(c => c.Modules.OrderBy(m => m.SortOrder))
-                .FirstOrDefaultAsync();
-
-            if (course == null) return View("StudentDashboard", null);
-
-            var selectedModuleId = moduleId ?? course.Modules.FirstOrDefault()?.ModuleId;
-
-            var topics = new List<Topic>();
-            var progressMap = new Dictionary<int, UserProgress>();
-
-            if (selectedModuleId != null)
-            {
-                topics = await _db.Topics
-                    .Where(t => t.ModuleId == selectedModuleId)
-                    .OrderBy(t => t.SortOrder)
-                    .ToListAsync();
-
-                var topicIds = topics.Select(t => t.TopicId).ToList();
-                var progressList = await _db.Userprogress
-                    .Where(p => p.UserId == userId && topicIds.Contains(p.TopicId))
-                    .ToListAsync();
-
-                progressMap = progressList.ToDictionary(p => p.TopicId, p => p);
-            }
-
-            ViewBag.Course = course;
-            ViewBag.SelectedModuleId = selectedModuleId;
-            ViewBag.Topics = topics;
-            ViewBag.Progress = progressMap;
             ViewBag.Username = user.Username;
-
             return View();
         }
 
@@ -76,17 +42,17 @@ namespace WebApplication1.Controllers
             var userId = HttpContext.Session.GetInt32("UserId");
             if (userId == null) return Unauthorized();
 
-            var progress = await _db.Userprogress
-                .FirstOrDefaultAsync(p => p.UserId == userId && p.TopicId == topicId);
+            //var progress = await _db.Userprogress
+            //    .FirstOrDefaultAsync(p => p.UserId == userId && p.TopicId == topicId);
 
-            if (progress == null)
-            {
-                progress = new UserProgress { UserId = userId.Value, TopicId = topicId };
-                _db.Userprogress.Add(progress);
-            }
+            //if (progress == null)
+            //{
+            //   // progress = new UserProgress { UserId = userId.Value, TopicId = topicId };
+            //    _db.Userprogress.Add(progress);
+            //}
 
-            progress.PdfViewed = true;
-            progress.UpdatedOn = DateTime.Now;
+            //progress.PdfViewed = true;
+            //progress.UpdatedOn = DateTime.Now;
             await _db.SaveChangesAsync();
 
             return Ok();

@@ -1,0 +1,93 @@
+﻿@{
+    ViewData["Title"] = "C# Module";
+   
+}
+<div class="module-page">
+    <div class="module-crumb">.NET full stack</div>
+    <h2 class="module-heading">C# module</h2>
+
+    <div class="module-tabs">
+        <div class="tab tab-active">Overview</div>
+        <div class="tab">Grades</div>
+        <div class="tab">Activity</div>
+    </div>
+
+    <a asp-controller="Dashboard" asp-action="StudentDashboard" class="back-link">
+        <i class="bi bi-arrow-left"></i> Back to modules
+    </a>
+
+    <!-- Reading Material -->
+    <div class="module-section">
+        <button class="section-header" data-bs-toggle="collapse" data-bs-target="#secReading">
+            <span><i class="bi bi-chevron-down"></i> Reading material</span>
+        </button>
+        <div id="secReading" class="collapse show">
+            <div class="item-row">
+                <div class="item-left"><i class="bi bi-filetype-pdf pdf-icon"></i> C_Sharp_Part_1</div>
+                <span class="pill pill-done">Done</span>
+            </div>
+            <div class="item-row">
+                <div class="item-left"><i class="bi bi-filetype-pdf pdf-icon"></i> C_Sharp_Part_2</div>
+                <span class="pill pill-pending">Mark as done</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Practice Tests -->
+    <div class="module-section">
+        <button class="section-header" data-bs-toggle="collapse" data-bs-target="#secTests">
+            <span><i class="bi bi-chevron-down"></i> Practice tests</span>
+        </button>
+        <div id="secTests" class="collapse show">
+            <div class="test-row">
+                <div>
+                    <div class="test-name">Practice Test 1</div>
+                    <div class="test-meta">Opened: 15 Jan 2026, 9:00 AM</div>
+                </div>
+                <span class="pill pill-done">85%</span>
+            </div>
+            <div class="test-row">
+                <div>
+                    <div class="test-name">Practice Test 2</div>
+                    <div class="test-meta">Opens: 20 Jan 2026, 9:00 AM</div>
+                </div>
+                <span class="pill pill-pending">Not attempted</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Walkthroughs -->
+    <div class="module-section">
+        <button class="section-header" data-bs-toggle="collapse" data-bs-target="#secWalk">
+            <span><i class="bi bi-chevron-down"></i> Walkthroughs</span>
+        </button>
+        <div id="secWalk" class="collapse show">
+            <div class="item-row">
+                <div class="item-left"><i class="bi bi-file-text walk-icon"></i> Walkthrough 1: Environment setup</div>
+                <span class="pill pill-pending">Mark as done</span>
+            </div>
+            <div class="item-row">
+                <div class="item-left"><i class="bi bi-file-text walk-icon"></i> Walkthrough 2: C# language basics</div>
+                <span class="pill pill-pending">Mark as done</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Module-end Exam -->
+    <div class="module-section">
+        <button class="section-header" data-bs-toggle="collapse" data-bs-target="#secExam">
+            <span><i class="bi bi-chevron-down"></i> Module-end exam</span>
+        </button>
+        <div id="secExam" class="collapse show">
+            <div class="exam-row">
+                <div>
+                    <div class="test-name">C# module-end exam</div>
+                    <div class="test-meta">Opens after all topics are completed</div>
+                </div>
+                <span class="pill pill-locked"><i class="bi bi-lock"></i> Locked</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+@await Html.PartialAsync("_ModuleLayoutStyles")

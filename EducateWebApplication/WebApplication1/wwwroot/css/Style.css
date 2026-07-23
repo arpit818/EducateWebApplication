@@ -7,3 +7,43 @@
     /*background: linear-gradient(90deg, #4e54c8, #8f94fb) ;*/
     background: linear-gradient(180deg, #d4f5e0, #eafaf1);
 }
+.navbar-brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    color: #2f6e51;
+    letter-spacing: 1px;
+    text-decoration: none;
+}
+
+.navbar-brand-logo i {
+    font-size: 24px;
+    color: #2f6e51;
+}
+
+.navbar-brand-logo strong {
+    color: #1f4d38;
+    font-weight: 700;
+}
+
+.nav-username {
+    font-size: 13px;
+    color: #3a4a43;
+    font-weight: 600;
+}
+
+.nav-logout {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: #b3261e;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+    .nav-logout:hover {
+        text-decoration: underline;
+    }
+
